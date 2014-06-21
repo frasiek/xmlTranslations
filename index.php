@@ -31,9 +31,9 @@ class Index {
 
     function __construct() {
         session_start();
+        $this->setErrorReporting();
         $this->readSession();
         $this->readRequest();
-        $this->setErrorReporting();
         try {
             @$this->query = new Query($this->session[self::DB_HOST], $this->session[self::DB_USER], $this->session[self::DB_PASSWORD], $this->session[self::DB_DB]);
         } catch (\Exception $ex) {
@@ -157,8 +157,8 @@ class Index {
     }
 
     protected function setErrorReporting() {
-        error_reporting(E_ALL);
-        ini_set("display_errors", 1);
+        error_reporting(false);
+        ini_set("display_errors", 0);
     }
 
 }

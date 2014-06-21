@@ -97,7 +97,7 @@ main.prototype.getTableData = function(tableName){
     this.tableName = tableName;
     $("#dynamicContent").removeClass("container");
     $("#dynamicContent").html("<iframe class='full-content' src='index.php?a=showContent&tableName="+tableName+"'></ifarame>");
-    $("#dynamicContent").find("iframe").height($(window).height()-$(".navbar").outerHeight(true));
+    $("#dynamicContent").find("iframe").height($(window).height()-$(".navbar").outerHeight(true)-10);
     $("#dynamicContent").find("iframe").load(function(){
         $($("#dynamicContent").find("iframe").contents()).find(".sorting").click(function(e){
             e.preventDefault();

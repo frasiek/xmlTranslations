@@ -30,7 +30,7 @@ class XMLDecorator {
             $return .= "<row>";
             $i = 0;
             foreach($row as $cellName => $cell){
-                $return .= "<{$cellName} field='1' no='".($i++)."'>{$cell}</{$cellName}>";
+                $return .= "<{$cellName} field='1' no='".($i++)."'><![CDATA[{$cell}]]></{$cellName}>";
             }
             $return .= "</row>";
         }
