@@ -4,8 +4,7 @@
  * Query
  * @author Michał Fraś
  */
-require_once (__DIR__ . "/config.php");
-
+namespace mfXML;
 class Query {
 
     protected $_distinct = false;
@@ -22,10 +21,16 @@ class Query {
     protected $_countedRows = 0;
     protected static $DB;
 
-    function __construct() {
+    function __construct($host, $user, $pass, $db) {
         if(!self::$DB){
-            self::$DB = mysql_connect(DB_HOST, DB_USER, DB_PASS);
-            mysql_query("USE " . DB_DB, self::$DB);
+            if(is_null($host) || is_null($user) || is_null($pass) || is_null($db)){
+                throw new \Exception("Empty DB connection",1);
+            }
+            self::$DB = mysql_connect($host, $user, $pass);
+            if(mysql_errno(self::$DB)){
+                throw new \Exception("Cannot connect to DB",2);
+            }
+            mysql_query("USE " . $db, self::$DB);
             mysql_set_charset("utf8", self::$DB);
         }
     }
@@ -253,11 +258,18 @@ class Query {
         return $data[0];
     }
     
-    public static function rawQuery($query){
+    public static function rawQuery($query, $getAll = false){
         if(!self::$DB){
             new Query();//inicjalizacja polaczenia
         }
-        mysql_query($query,self::$DB);
+        $q = mysql_query($query,self::$DB);
+        if($getAll){
+            $data = array();
+            while ($tmp = mysql_fetch_assoc($q)) {
+                $data[] = $tmp;
+            }
+            return $data;
+        }
     }
     
     public function strip($param){
